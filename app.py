@@ -1,29 +1,33 @@
 import streamlit as st
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
+import os
+from dotenv import load_dotenv
+
 from Home_VirtuLab import menu
 from Home_VirtuLab import header_img
 
-header_img()
+load_dotenv()
+#header_img()
 
-st.title("IEEE RAS UFCG - Virtual Lab")
+st.set_page_config(page_title="Virtual Lab", layout="wide")
 
-st.sidebar.title("Navigation")
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-# if not st.session_state.role:
-if "role" not in st.session_state:
-    st.session_state.role = None
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    os.getenv('COOKIE_SIGNATURE_KEY'),
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
 
-st.session_state.role = st.session_state.role
+name, auth_status, username = authenticator.login('Login', 'main')
 
-def set_role():
-    st.session_state.role = st.session_state.role
-
-st.selectbox(
-    "Select your role",
-    [None, "user", "admin", "super-user"],
-    key="role",
-    on_change= set_role,
-    )
-
-menu()
-# else:
-    # menu()
+if auth_status:
+    authenticator.logout('Logout', 'sidebar')
+    st.sidebar.title(f"Welcome, {name}")
+    st.session_state['role'] = config['credentials']['usernames'][username]['role']
+    st.session_state['username'] = username

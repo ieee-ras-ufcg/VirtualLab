@@ -9,12 +9,12 @@ def header_img():
 def authenticated_menu():
     st.sidebar.image("virtulogo.png", width=200) 
     st.sidebar.page_link("pages/user.py", label="User Profile")
-    if st.session_state.role in ["admin", "super-user"]:
+    if st.session_state.role in ["admin", "root"]:
         st.sidebar.page_link("pages/admin.py", label="User Management")
         st.sidebar.page_link(
-            "pages/super-user.py",
+            "pages/root.py",
             label="Manage Admin Access",
-            disabled=st.session_state.role != "super-user",
+            disabled=st.session_state.role != "root",
         )
     if "role" in st.session_state:
         st.sidebar.page_link("pages/logout.py", label="Log out")

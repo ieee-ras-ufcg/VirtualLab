@@ -1,0 +1,19 @@
+credentials: 
+  usernames:
+    root:
+      email: ras@ee.ufcg.edu.br
+      name: Admin root
+      password: '$2b$12$MSnynWecipfFgIyEPeOYIeG/gcisvDxuozyB0xlp/B3F29kEk9rnu'
+      role: 'root'
+    user_1:
+      email: user_1@ee.ufcg.edu.br
+      name: User 1
+      password: '$2b$12$C4xetFTd8PJsI67Oy.lGaOAt87p.RrKe0XdsfqfkMwNBipZtT/nHS'
+      role: 'user'
+cookie: 
+  expiry_days: 30
+  key: 50f541a23f06220229ce8e43f7a26749ae3a2f72f1f593692ce06e58d2ac193d
+  name: virtual_lab_cookie
+preauthorized:
+  emails:
+  - carlos.eduardo.carvalho@ee.ufcg.edu.br

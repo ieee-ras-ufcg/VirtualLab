@@ -6,7 +6,7 @@ header_img()
 
 menu_with_redirect()
 
-if st.session_state.role not in ["admin", "super-user"]:
+if st.session_state.role not in ["admin", "root"]:
     st.warning("You do not have permission to access this page.")
     st.stop()
 
