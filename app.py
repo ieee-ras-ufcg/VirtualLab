@@ -28,14 +28,11 @@ authenticator = stauth.Authenticate(
 
 # Login section
 
-login_tab, register_tab = st.tabs(["Login", "Register"])
+authenticator.login('main')
 
-with login_tab:
-    name, auth_status, username = authenticator.login('Login', 'main')
-
-with register_tab:
+if not st.session_state['authentication_status']:
     try:
-        if authenticator.register_user('Register user', pre_authorized=config['preauthorized']['emails']):
+        if authenticator.register_user('main', pre_authorized=config['preauthorized']['emails']):
             config['credentials']['usernames'][st.session_state['username']]['role'] = 'user'
 
             with open('config.yaml', 'w') as file:
@@ -45,13 +42,11 @@ with register_tab:
     except Exception as e:
         st.error(e)
 
-
-if st.session_state.get("authentication_status"):
+if st.session_state['authentication_status']:
     authenticator.logout('Logout', 'sidebar')
-    st.sidebar.title(f"Welcome, {name}")
+    st.sidebar.title(f"Welcome, {st.session_state['name']}")
     
-    st.session_state['role'] = config['credentials']['usernames'][username]['role']
-    st.session_state['username'] = username
+    st.session_state['role'] = config['credentials']['usernames'][st.session_state['username']]['role']
 
     st.title("Virtual Lab Homepage")
     st.write("This is the homepage of the Virtual Lab application. Select an option from the sidebar to get started.")
@@ -64,7 +59,7 @@ if st.session_state.get("authentication_status"):
     st.header("Main Dashboard")
     #todo: Add main dashboard content
 
-elif auth_status is False:
+elif st.session_state['authentication_status'] is False:
     st.error('Username/password is incorrect')
-elif auth_status is None:
-    st.warning('Please enter your username and password')
+elif st.session_state['authentication_status'] is None:
+    st.warning('Please enter your username and password / Register a new user')
